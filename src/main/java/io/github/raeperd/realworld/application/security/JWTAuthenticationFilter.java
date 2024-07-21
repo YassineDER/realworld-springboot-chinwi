@@ -16,13 +16,14 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         ofNullable(request.getHeader(AUTHORIZATION))
                 .map(authHeader -> authHeader.substring("Token ".length()))
                 .map(JWT::new)
                 .ifPresent(getContext()::setAuthentication);
         filterChain.doFilter(request, response);
-    }
+    }   
 
     @SuppressWarnings("java:S2160")
     static class JWT extends AbstractAuthenticationToken {
